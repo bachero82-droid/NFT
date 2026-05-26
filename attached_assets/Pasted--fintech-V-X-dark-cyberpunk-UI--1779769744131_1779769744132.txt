@@ -1,0 +1,205 @@
+Создай футуристическое fintech-приложение под названием “VΞX”.
+
+Стиль:
+- dark cyberpunk UI
+- чёрный фон
+- неоновые фиолетовые/синие градиенты
+- glassmorphism
+- плавные анимации
+- премиальный футуристичный дизайн
+- адаптивность для ПК и телефона
+- смесь банка + NFT + игровой платформы
+
+Технологии:
+- Frontend: Next.js + TailwindCSS + Framer Motion
+- Backend: Node.js + Express
+- База данных: PostgreSQL
+- ORM: Prisma
+- Авторизация: JWT + bcrypt
+- Real-time: Socket.io
+- Хранение файлов: Supabase Storage или Cloudinary
+
+Главная идея:
+VΞX — цифровой банк нового поколения с NFT-картами, маркетплейсом, переводами между пользователями и встроенными играми.
+
+ФУНКЦИИ:
+
+1. Авторизация
+- Регистрация и вход
+- Система username (@nickname)
+- Email verification
+- Аватары профиля
+- Безопасная JWT авторизация
+
+2. Кошелёк
+- Каждый пользователь получает стартовый баланс 5000 VEX Coins
+- Баланс аккаунта
+- Мгновенные переводы между пользователями
+- История транзакций
+- Анимированный интерфейс баланса
+
+3. NFT-КАРТЫ
+Пользователь может создавать кастомные карты.
+
+Карты:
+- горизонтальные
+- большие скруглённые углы
+- футуристичный дизайн
+
+Поддержка:
+- изображений
+- GIF
+- коротких видео
+- собственных рисунков
+
+Каждая карта имеет:
+- случайный номер
+- случайный CVV
+- уровень редкости
+- NFT ID
+
+4. Система редкости
+Редкости:
+- Common
+- Rare
+- Epic
+- Legendary
+- Mythic
+
+Редкие номера увеличивают цену карты.
+
+Примеры редких номеров:
+- 7777 7777
+- 1111 1111
+- 1234 5678
+
+Редкие CVV:
+- 000
+- 111
+- 777
+- 999
+
+5. ЭФФЕКТЫ КАРТ
+На телефоне:
+- карта реагирует на наклон телефона (гироскоп)
+
+На ПК:
+- карта наклоняется к курсору
+- glow-эффекты
+- 3D hover
+- параллакс
+- анимированные блики
+
+6. NFT MARKETPLACE
+Маркетплейс карт:
+- покупка
+- продажа
+- обмен
+
+Функции:
+- фильтр по редкости
+- live цены
+- история владельцев
+- аукционы
+- трендовые карты
+
+7. ИГРЫ
+Добавить:
+- Coinflip
+- Crash game (как Aviator)
+- система ставок
+- live multiplier
+- leaderboard
+- история игр
+
+8. СОЦИАЛЬНЫЕ ФУНКЦИИ
+- друзья
+- профили пользователей
+- чат
+- activity feed
+- витрина редких карт
+
+9. СТРАНИЦЫ
+Создать страницы:
+- Home
+- Dashboard
+- Wallet
+- Marketplace
+- Create Card
+- Games
+- Profile
+- Settings
+
+10. БАЗА ДАННЫХ
+
+Users:
+- id
+- username
+- email
+- password_hash
+- avatar
+- balance
+- created_at
+
+Cards:
+- id
+- owner_id
+- card_number
+- cvv
+- rarity
+- nft_id
+- media_url
+- card_theme
+- created_at
+
+Transactions:
+- id
+- sender_id
+- receiver_id
+- amount
+- type
+- created_at
+
+Marketplace:
+- id
+- card_id
+- seller_id
+- price
+- status
+- created_at
+
+Games:
+- id
+- user_id
+- game_type
+- bet_amount
+- multiplier
+- result
+- created_at
+
+11. ДОПОЛНИТЕЛЬНО
+- неоновые loading-анимации
+- плавные переходы
+- звуковые эффекты
+- real-time обновления
+- production-ready структура
+- красивый premium UI
+
+Дизайн вдохновлён:
+- cyberpunk
+- fintech apps
+- crypto exchange UI
+- NFT marketplace
+- holographic interfaces
+
+Сгенерируй:
+- frontend
+- backend
+- Prisma schema
+- PostgreSQL setup
+- API routes
+- responsive UI
+- анимации
+- структуру проекта
+- reusable components
+- seed данные
