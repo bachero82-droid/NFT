@@ -1,0 +1,141 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+
+  --font-sans: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  --font-display: 'Clash Display', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+:root {
+  --background: 0 0% 98%;
+  --foreground: 220 50% 10%;
+
+  --border: 220 20% 90%;
+  --input: 220 20% 90%;
+  --ring: 350 100% 60%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 220 50% 10%;
+  --card-border: 220 20% 90%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 50% 10%;
+  --popover-border: 220 20% 90%;
+
+  --primary: 350 100% 60%; /* Hot Coral */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 170 100% 40%; /* Emerald */
+  --secondary-foreground: 0 0% 100%;
+
+  --muted: 220 20% 94%;
+  --muted-foreground: 220 10% 40%;
+
+  --accent: 45 100% 50%; /* Hot Yellow */
+  --accent-foreground: 220 50% 10%;
+
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 0 0% 100%;
+
+  --radius: 1rem;
+}
+
+.dark {
+  /* Forced light mode essentially, but mapped just in case */
+  --background: 0 0% 98%;
+  --foreground: 220 50% 10%;
+  --border: 220 20% 90%;
+  --input: 220 20% 90%;
+  --ring: 350 100% 60%;
+  --card: 0 0% 100%;
+  --card-foreground: 220 50% 10%;
+  --card-border: 220 20% 90%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 220 50% 10%;
+  --popover-border: 220 20% 90%;
+  --primary: 350 100% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 170 100% 40%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 220 20% 94%;
+  --muted-foreground: 220 10% 40%;
+  --accent: 45 100% 50%;
+  --accent-foreground: 220 50% 10%;
+  --destructive: 0 100% 50%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply font-sans antialiased bg-background text-foreground;
+    background-image: 
+      radial-gradient(circle at 0% 0%, rgba(255, 90, 120, 0.15), transparent 40%),
+      radial-gradient(circle at 100% 100%, rgba(0, 220, 160, 0.15), transparent 40%),
+      radial-gradient(circle at 50% 50%, rgba(255, 210, 0, 0.1), transparent 60%);
+    background-attachment: fixed;
+  }
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.card-common { --rarity-color: 220 10% 60%; }
+.card-rare { --rarity-color: 200 100% 50%; }
+.card-epic { --rarity-color: 280 100% 60%; }
+.card-legendary { --rarity-color: 45 100% 50%; }
+.card-mythic { --rarity-color: 350 100% 60%; }
+
+.perspective-1000 { perspective: 1000px; }
+.transform-style-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+
+/* Hype stickers and panels */
+.hype-panel {
+  @apply bg-white border-2 border-black rounded-3xl shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] transition-all hover:-translate-y-1 hover:shadow-[12px_12px_0px_0px_rgba(0,0,0,1)];
+}
+.hype-button {
+  @apply bg-primary text-white font-black uppercase border-2 border-black rounded-xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-y-1 active:translate-x-1 active:shadow-none transition-all;
+}
+.hype-badge {
+  @apply bg-accent text-black font-black uppercase text-xs px-3 py-1 border-2 border-black rounded-full rotate-[-2deg] shadow-[2px_2px_0px_0px_rgba(0,0,0,1)];
+}
