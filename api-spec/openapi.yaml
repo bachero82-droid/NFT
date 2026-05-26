@@ -1,0 +1,821 @@
+openapi: 3.1.0
+info:
+  title: Api
+  version: 0.1.0
+  description: VEX Fintech API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+  - name: auth
+  - name: cards
+  - name: marketplace
+  - name: transactions
+  - name: games
+  - name: users
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # AUTH
+  /auth/register:
+    post:
+      operationId: register
+      tags: [auth]
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RegisterInput"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad request
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Unauthorized
+
+  /auth/logout:
+    post:
+      operationId: logout
+      tags: [auth]
+      summary: Logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /auth/me:
+    get:
+      operationId: getMe
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "401":
+          description: Unauthorized
+
+  # USERS
+  /users/{username}:
+    get:
+      operationId: getUserByUsername
+      tags: [users]
+      summary: Get user profile by username
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "404":
+          description: Not found
+
+  /users/me/profile:
+    patch:
+      operationId: updateProfile
+      tags: [users]
+      summary: Update own profile
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProfileUpdate"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+
+  /users/me/stats:
+    get:
+      operationId: getMyStats
+      tags: [users]
+      summary: Get current user stats
+      responses:
+        "200":
+          description: Stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserStats"
+
+  # CARDS
+  /cards:
+    get:
+      operationId: getMyCards
+      tags: [cards]
+      summary: Get current user's cards
+      responses:
+        "200":
+          description: List of cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Card"
+    post:
+      operationId: createCard
+      tags: [cards]
+      summary: Create a new card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardInput"
+      responses:
+        "201":
+          description: Card created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+
+  /cards/{id}:
+    get:
+      operationId: getCard
+      tags: [cards]
+      summary: Get a card by ID
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+    patch:
+      operationId: updateCard
+      tags: [cards]
+      summary: Update a card
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardUpdate"
+      responses:
+        "200":
+          description: Updated card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+    delete:
+      operationId: deleteCard
+      tags: [cards]
+      summary: Delete a card
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /cards/{id}/set-primary:
+    post:
+      operationId: setPrimaryCard
+      tags: [cards]
+      summary: Set card as primary
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Card set as primary
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+
+  # MARKETPLACE
+  /marketplace:
+    get:
+      operationId: getMarketListings
+      tags: [marketplace]
+      summary: Get all marketplace listings
+      parameters:
+        - name: rarity
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: minPrice
+          in: query
+          required: false
+          schema:
+            type: number
+        - name: maxPrice
+          in: query
+          required: false
+          schema:
+            type: number
+      responses:
+        "200":
+          description: Listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /marketplace/trending:
+    get:
+      operationId: getTrendingListings
+      tags: [marketplace]
+      summary: Get trending listings
+      responses:
+        "200":
+          description: Trending listings
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Listing"
+
+  /marketplace/listings:
+    post:
+      operationId: createListing
+      tags: [marketplace]
+      summary: List a card for sale
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ListingInput"
+      responses:
+        "201":
+          description: Listing created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Listing"
+
+  /marketplace/listings/{id}:
+    delete:
+      operationId: deleteListing
+      tags: [marketplace]
+      summary: Remove a listing
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageResponse"
+
+  /marketplace/listings/{id}/buy:
+    post:
+      operationId: buyListing
+      tags: [marketplace]
+      summary: Buy a card from the marketplace
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Purchased
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+
+  # TRANSACTIONS
+  /transactions:
+    get:
+      operationId: getTransactions
+      tags: [transactions]
+      summary: Get current user's transaction history
+      responses:
+        "200":
+          description: Transactions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Transaction"
+
+  /transactions/transfer:
+    post:
+      operationId: transfer
+      tags: [transactions]
+      summary: Send VEX coins to another user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TransferInput"
+      responses:
+        "200":
+          description: Transfer done
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Transaction"
+
+  # GAMES
+  /games/coinflip:
+    post:
+      operationId: playCoinflip
+      tags: [games]
+      summary: Play a coinflip game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CoinflipInput"
+      responses:
+        "200":
+          description: Result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CoinflipResult"
+
+  /games/crash/start:
+    post:
+      operationId: startCrash
+      tags: [games]
+      summary: Start a crash game round
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CrashStartInput"
+      responses:
+        "200":
+          description: Round started
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CrashRound"
+
+  /games/crash/cashout:
+    post:
+      operationId: cashoutCrash
+      tags: [games]
+      summary: Cash out from crash game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CrashCashoutInput"
+      responses:
+        "200":
+          description: Cashout result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CrashResult"
+
+  /games/history:
+    get:
+      operationId: getGameHistory
+      tags: [games]
+      summary: Get user's game history
+      responses:
+        "200":
+          description: Game history
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GameRecord"
+
+  /games/leaderboard:
+    get:
+      operationId: getLeaderboard
+      tags: [games]
+      summary: Get game leaderboard
+      responses:
+        "200":
+          description: Leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderboardEntry"
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required: [status]
+
+    MessageResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      required: [message]
+
+    # AUTH
+    RegisterInput:
+      type: object
+      properties:
+        username:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [username, email, password]
+
+    LoginInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+      required: [email, password]
+
+    AuthResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/User"
+        token:
+          type: string
+      required: [user, token]
+
+    # USER
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        balance:
+          type: number
+        primaryCardId:
+          type: ["integer", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, username, email, balance, createdAt]
+
+    ProfileUpdate:
+      type: object
+      properties:
+        username:
+          type: string
+        avatarUrl:
+          type: string
+
+    UserStats:
+      type: object
+      properties:
+        totalCards:
+          type: integer
+        totalGamesPlayed:
+          type: integer
+        totalWon:
+          type: number
+        totalLost:
+          type: number
+        netProfit:
+          type: number
+        biggestWin:
+          type: number
+        cardsSold:
+          type: integer
+      required: [totalCards, totalGamesPlayed, totalWon, totalLost, netProfit, biggestWin, cardsSold]
+
+    # CARDS
+    Card:
+      type: object
+      properties:
+        id:
+          type: integer
+        ownerId:
+          type: integer
+        ownerUsername:
+          type: string
+        cardNumber:
+          type: string
+        cvv:
+          type: string
+        rarity:
+          type: string
+          enum: [common, rare, epic, legendary, mythic]
+        nftId:
+          type: string
+        mediaUrl:
+          type: ["string", "null"]
+        mediaType:
+          type: ["string", "null"]
+          enum: ["image", "gif", "video", null]
+        cardTheme:
+          type: string
+        isPrimary:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, ownerId, ownerUsername, cardNumber, cvv, rarity, nftId, cardTheme, isPrimary, createdAt]
+
+    CardInput:
+      type: object
+      properties:
+        cardTheme:
+          type: string
+        mediaUrl:
+          type: string
+        mediaType:
+          type: string
+          enum: [image, gif, video]
+      required: [cardTheme]
+
+    CardUpdate:
+      type: object
+      properties:
+        cardTheme:
+          type: string
+        mediaUrl:
+          type: string
+        mediaType:
+          type: string
+          enum: [image, gif, video]
+
+    # MARKETPLACE
+    Listing:
+      type: object
+      properties:
+        id:
+          type: integer
+        card:
+          $ref: "#/components/schemas/Card"
+        sellerId:
+          type: integer
+        sellerUsername:
+          type: string
+        price:
+          type: number
+        status:
+          type: string
+          enum: [active, sold, cancelled]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, card, sellerId, sellerUsername, price, status, createdAt]
+
+    ListingInput:
+      type: object
+      properties:
+        cardId:
+          type: integer
+        price:
+          type: number
+      required: [cardId, price]
+
+    # TRANSACTIONS
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+        senderId:
+          type: ["integer", "null"]
+        receiverId:
+          type: ["integer", "null"]
+        senderUsername:
+          type: ["string", "null"]
+        receiverUsername:
+          type: ["string", "null"]
+        amount:
+          type: number
+        type:
+          type: string
+          enum: [transfer, game_win, game_loss, card_sale, card_purchase, initial_balance]
+        description:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, amount, type, createdAt]
+
+    TransferInput:
+      type: object
+      properties:
+        toUsername:
+          type: string
+        amount:
+          type: number
+      required: [toUsername, amount]
+
+    # GAMES
+    CoinflipInput:
+      type: object
+      properties:
+        bet:
+          type: number
+        side:
+          type: string
+          enum: [heads, tails]
+      required: [bet, side]
+
+    CoinflipResult:
+      type: object
+      properties:
+        result:
+          type: string
+          enum: [heads, tails]
+        won:
+          type: boolean
+        bet:
+          type: number
+        payout:
+          type: number
+        newBalance:
+          type: number
+      required: [result, won, bet, payout, newBalance]
+
+    CrashStartInput:
+      type: object
+      properties:
+        bet:
+          type: number
+      required: [bet]
+
+    CrashRound:
+      type: object
+      properties:
+        roundId:
+          type: string
+        bet:
+          type: number
+        crashPoint:
+          type: number
+      required: [roundId, bet, crashPoint]
+
+    CrashCashoutInput:
+      type: object
+      properties:
+        roundId:
+          type: string
+        multiplier:
+          type: number
+      required: [roundId, multiplier]
+
+    CrashResult:
+      type: object
+      properties:
+        won:
+          type: boolean
+        multiplier:
+          type: number
+        crashPoint:
+          type: number
+        bet:
+          type: number
+        payout:
+          type: number
+        newBalance:
+          type: number
+      required: [won, multiplier, crashPoint, bet, payout, newBalance]
+
+    GameRecord:
+      type: object
+      properties:
+        id:
+          type: integer
+        gameType:
+          type: string
+          enum: [coinflip, crash]
+        bet:
+          type: number
+        multiplier:
+          type: ["number", "null"]
+        result:
+          type: string
+          enum: [win, loss]
+        payout:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+      required: [id, gameType, bet, result, payout, createdAt]
+
+    LeaderboardEntry:
+      type: object
+      properties:
+        userId:
+          type: integer
+        username:
+          type: string
+        avatarUrl:
+          type: ["string", "null"]
+        totalWon:
+          type: number
+        gamesPlayed:
+          type: integer
+        biggestWin:
+          type: number
+      required: [userId, username, totalWon, gamesPlayed, biggestWin]
